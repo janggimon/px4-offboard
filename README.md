@@ -204,7 +204,7 @@ find `<link name='base_link'> ... </link>` and then replace it with code below.
       <sensor name="downward_camera" type="camera">
         <pose>0 0 -0.15 0 1.5708 0</pose>
         <camera>
-          <horizontal_fov>1.047</horizontal_fov>
+          <horizontal_fov>1.3089</horizontal_fov>
           <image>
             <width>640</width>
             <height>480</height>
