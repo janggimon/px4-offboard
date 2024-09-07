@@ -20,12 +20,12 @@ Refer to: https://docs.px4.io/main/en/dev_setup/fast-dds-installation.html
 !Ubuntu 20.04: Fast DDS 2.0.2 (or later) and Fast-RTPS-Gen 1.0.4 (not later!).
 
 Check if FastRTPS is installed:
-```
+```bash
 dpkg -l | grep fastrt
 ​```
 
 You will see something like:
-```
+```bash
 ii  ros-foxy-fastrtps                               2.1.2-1focal.20220829.174844               amd64        Implementation of RTPS standard.
 ii  ros-foxy-fastrtps-cmake-module                  1.0.4-1focal.20220829.181444               amd64        Provide CMake module to find eProsima FastRTPS.
 ii  ros-foxy-rmw-fastrtps-cpp                       1.3.1-1focal.20221012.224708               amd64        Implement the ROS middleware interface using eProsima FastRTPS static code generation in C++.
@@ -38,24 +38,24 @@ Then you are all good!
 ​
 Java is required to build and use eProsima's RTPS/DDS from IDL code generation tool - Fast-RTPS-Gen. Java JDK 11 is recommended, and it should have been installed as you installed PX4-Autopilot. (Right now I have JDK 13 and it works fine.)
 Clone Fast-RTPS-Gen 1.0.4:
-```
+```bash
 git clone --recursive https://github.com/eProsima/Fast-DDS-Gen.git -b v1.0.4 ~/Fast-RTPS-Gen \
 && cd ~/Fast-RTPS-Gen/gradle/wrapper
 ​```
 After that, modify the distribution version  of gradle inside the gradle-wrapper.properties file to gradle-6.8.3 such that the distributionUrl file becomes as follows:
-```
+```bash
 distributionUrl=https\://services.gradle.org/distributions/gradle-6.8.3-bin.zip
 ```
 You have to edit the file!
 ​
 Now you should run the following commands:
-```
+```bash
 cd ~/Fast-RTPS-Gen 
 ./gradlew assemble && sudo env "PATH=$PATH" ./gradlew install
 ```
 ### Installing the px4-offboard
 run the following commands:
-```
+```bash
 cd ~
 git clone https://github.com/janggimon/px4-offboard.git
 cd ~/px4-offboard
@@ -66,7 +66,7 @@ source ~/.bashrc
 ### Installing the px4_ros_com and px4_msgs packages
 The px4-offboard example requires the px4_ros_com bridge and px4_msgs definitions.
 Run the following commands:
-```
+```bash
 cd ~
 mkdir px4_ros_com_ws
 cd px4_ros_com_ws
@@ -76,17 +76,17 @@ git clone https://github.com/PX4/px4_ros_com.git
 git clone https://github.com/PX4/px4_msgs.git
 ​```
 Move to the px4_ros_com_ws workspace root directory and build them:
-```
+```bash
 cd ~/px4_ros_com_ws
 colcon build
 ​```
 
 Add the setup.bash file to bashrc and source it:
-```
+```bash
 echo "source ~/px4_ros_com_ws/install/local_setup.sh" >> ~/.bashrc
 source ~/.bashrc
 ```
-```
+```bash
 echo "source ~/px4_ros_com_ws/install/setup.bash" >> ~/.bashrc
 source ~/.bashrc
 ```
@@ -95,7 +95,7 @@ source ~/.bashrc
 Building the micro_ros_agent
 Refer to:  Building micro-ROS-Agent (commands below is from Steve Henderson’s guide)
 
-```
+```bash
 cd ~
 mkdir ~/micro_ros_ws
 cd micro_ros_ws
@@ -111,17 +111,17 @@ ros2 run micro_ros_setup build_agent.sh
 ​```
 
 Try running the agent:
-```
+```bash
 source install/local_setup.sh
 ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888
 ​```
 It should respond with:
-```
+```bash
 [1675611895.560324] info     | UDPv4AgentLinux.cpp | init                     | running...             | port: 8888
 [1675611895.560477] info     | Root.cpp           | set_verbose_level        | logger setup     
 ```
 Now source in bashrc:
-```
+```bash
 echo "source ~/micro_ros_ws/install/local_setup.sh" >> ~/.bashrc
 source ~/.bashrc
 ```
@@ -134,7 +134,7 @@ If you are running this on a companion computer to PX4, you will need to build t
 You will make use of 4 different terminals to run the offboard demo.
 
 On the first terminal,
-```
+```bash
 cd ~/micro_ros_ws
 export ROS_DOMAIN_ID=0
 export PYTHONOPTIMIZE=1
@@ -142,7 +142,7 @@ ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888 ROS_DOMAIN_ID=0
 ```
 
 On the second terminal,
-```
+```bash
 cd ~/PX4-Autopilot
 export ROS_DOMAIN_ID=0
 export PYTHONOPTIMIZE=1
@@ -150,22 +150,22 @@ make px4_sitl gazebo
 ```
 
 On the third terminal,
-```
+```bash
 cd ~/px4-offboard
 export ROS_DOMAIN_ID=0
 export PYTHONOPTIMIZE=1
 ros2 launch px4_offboard offboard_position_control.launch.py
+```
 
-```
 On the fourth terminal,
-```
+```bash
 ./QGroundControl.AppImage
 ```
 
 Then insert an aruco marker on the ground in Gazebo and let the iris(drone) take off in QGroundControl. Test the detection and precision landing.
 
 If you want to check the ros graph, run the following command in home directory:
-```
+```bash
 ros2 run rqt_graph rqt_graph
 ```
 Then you can see the graph as below:
