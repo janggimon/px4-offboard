@@ -168,6 +168,8 @@ If you want to check the ros graph, run the following command in home directory:
 ```
 ros2 run rqt_graph rqt_graph
 ```
+Then you can see the graph as below:
+![rosgraph2](https://github.com/user-attachments/assets/64dec5bc-b562-4518-bcec-08634ad7bf97)
 
 --------------------------------------------------not revised below-----------------------------------------------------------
 ### Hardware
