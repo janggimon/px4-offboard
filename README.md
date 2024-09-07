@@ -41,16 +41,16 @@ Then you are all good!
 Java is required to build and use eProsima's RTPS/DDS from IDL code generation tool - Fast-RTPS-Gen. Java JDK 11 is recommended, and it should have been installed as you installed PX4-Autopilot. (Right now I have JDK 13 and it works fine.)
 Clone Fast-RTPS-Gen 1.0.4:
 
-\```bash
+```bash
 git clone --recursive https://github.com/eProsima/Fast-DDS-Gen.git -b v1.0.4 ~/Fast-RTPS-Gen \
 && cd ~/Fast-RTPS-Gen/gradle/wrapper
-​````
+​```
 
 After that, modify the distribution version  of gradle inside the gradle-wrapper.properties file to gradle-6.8.3 such that the distributionUrl file becomes as follows:
 
-\```bash
+```bash
 distributionUrl=https\://services.gradle.org/distributions/gradle-6.8.3-bin.zip
-````
+```
 
 You have to edit the file!
 ​
