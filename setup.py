@@ -27,7 +27,6 @@ setup(
     entry_points={
         'console_scripts': [
             'offboard_control = px4_offboard.offboard_control:main',
-            'aruco_marker_detector = px4_offboard.aruco_marker_detector:main',
         ],
     },
 )
