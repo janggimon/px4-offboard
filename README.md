@@ -109,6 +109,7 @@ rosdep update
 ros2 run micro_ros_setup create_agent_ws.sh
 ros2 run micro_ros_setup build_agent.sh
 ​```
+
 Try running the agent:
 ```
 source install/local_setup.sh
@@ -162,6 +163,7 @@ On the fourth terminal,
 ```
 
 Then insert an aruco marker on the ground in Gazebo and let the iris(drone) take off in QGroundControl. Test the detection and precision landing.
+
 --------------------------------------------------not revised below-----------------------------------------------------------
 ### Hardware
 
