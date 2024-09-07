@@ -1,19 +1,126 @@
 # px4-offboard
-This `repository` contains a python examples for offboard control on ROS2 with [PX4](https://px4.io/)
+aruco-marker detection & precision landing in gazebo
+environment: unbuntu 20.04 & ros2 foxy
 
-The `px4_offboard` package contains the following nodes
-- `offboard_control.py`: Example of offboard position control using position setpoints
-- `visualizer.py`: Used for visualizing vehicle states in Rviz
-
-The source code is released under a BSD 3-Clause license.
-
-- **Author**: Jaeyoung Lim
-- **Affiliation**: Autonomous Systems Lab, ETH Zurich
+Author: Sunyong Hwang
+Affiliation: Korea University, Mechanical Engineering
+Reference: Jaeyoung-Lim/px4-offboard , yonseidrone.notion.site
 
 ## Setup
-Add the repository to the ros2 workspace
+The steps below assume you have already installed:
+ROS2 Foxy (Ubuntu 20.04), 
+Gazebo, 
+QGroundControl,
+PX4-Autopilot.
+
+FastDDS and FastRTPS should already be installed with Ubuntu 20.04, so start with installing Fast-RTPS-Gen.
+
+### Installing Fast-RTPS-Gen
+Refer to: https://docs.px4.io/main/en/dev_setup/fast-dds-installation.html
+⚠️
+Ubuntu 20.04: Fast DDS 2.0.2 (or later) and Fast-RTPS-Gen 1.0.4 (not later!).
+Check if FastRTPS is installed:
 ```
-git clone https://github.com/Jaeyoung-Lim/px4-offboard.git
+dpkg -l | grep fastrt
+​```
+You will see something like:
+```
+ii  ros-foxy-fastrtps                               2.1.2-1focal.20220829.174844               amd64        Implementation of RTPS standard.
+ii  ros-foxy-fastrtps-cmake-module                  1.0.4-1focal.20220829.181444               amd64        Provide CMake module to find eProsima FastRTPS.
+ii  ros-foxy-rmw-fastrtps-cpp                       1.3.1-1focal.20221012.224708               amd64        Implement the ROS middleware interface using eProsima FastRTPS static code generation in C++.
+ii  ros-foxy-rmw-fastrtps-shared-cpp                1.3.1-1focal.20221012.221742               amd64        Code shared on static and dynamic type support of rmw_fastrtps_cpp.
+ii  ros-foxy-rosidl-typesupport-fastrtps-c          1.0.4-1focal.20221012.215818               amd64        Generate the C interfaces for eProsima FastRTPS.
+ii  ros-foxy-rosidl-typesupport-fastrtps-cpp        1.0.4-1focal.20221012.215633               amd64        Generate the C++ interfaces for eProsima FastRTPS.
+```
+Then you are all good!
+​
+Java is required to build and use eProsima's RTPS/DDS from IDL code generation tool - Fast-RTPS-Gen. Java JDK 11 is recommended, and it should have been installed as you installed PX4-Autopilot. (Right now I have JDK 13 and it works fine.)
+Clone Fast-RTPS-Gen 1.0.4:
+```
+git clone --recursive https://github.com/eProsima/Fast-DDS-Gen.git -b v1.0.4 ~/Fast-RTPS-Gen \
+&& cd ~/Fast-RTPS-Gen/gradle/wrapper
+​```
+After that, modify the distribution version  of gradle inside the gradle-wrapper.properties file to gradle-6.8.3 such that the distributionUrl file becomes as follows:
+```
+distributionUrl=https\://services.gradle.org/distributions/gradle-6.8.3-bin.zip
+```
+You have to edit the file!
+​
+Now you should run the following commands:
+```
+cd ~/Fast-RTPS-Gen 
+./gradlew assemble && sudo env "PATH=$PATH" ./gradlew install
+```
+### Installing the px4-offboard
+run the following commands:
+```
+cd ~
+git clone https://github.com/janggimon/px4-offboard.git
+cd ~/px4-offboard
+colcon build
+echo "source ~/px4-offboard/install/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+```
+### Installing the px4_ros_com and px4_msgs packages
+The px4-offboard example requires the px4_ros_com bridge and px4_msgs definitions.
+Run the following commands:
+```
+cd ~
+mkdir px4_ros_com_ws
+cd px4_ros_com_ws
+mkdir src
+cd src
+git clone https://github.com/PX4/px4_ros_com.git
+git clone https://github.com/PX4/px4_msgs.git
+​```
+
+Move to the px4_ros_com_ws workspace root directory and build them:
+```
+cd ~/px4_ros_com_ws
+colcon build
+​```
+
+Add the setup.bash file to bashrc and source it:
+```
+echo "source ~/px4_ros_com_ws/install/local_setup.sh" >> ~/.bashrc
+source ~/.bashrc
+```
+```
+echo "source ~/px4_ros_com_ws/install/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+```
+
+### Installing the micro_ros_agent  (one time setup)
+Building the micro_ros_agent
+Refer to:  Building micro-ROS-Agent (commands below is from Steve Henderson’s guide)
+```
+cd ~
+mkdir ~/micro_ros_ws
+cd micro_ros_ws
+git clone -b $ROS_DISTRO https://github.com/micro-ROS/micro_ros_setup.git
+mkdir src
+mv micro_ros_setup/ src/
+colcon build
+source install/local_setup.sh
+sudo rosdep init
+rosdep update
+ros2 run micro_ros_setup create_agent_ws.sh
+ros2 run micro_ros_setup build_agent.sh
+​```
+Try running the agent:
+```
+source install/local_setup.sh
+ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888
+​```
+It should respond with:
+```
+[1675611895.560324] info     | UDPv4AgentLinux.cpp | init                     | running...             | port: 8888
+[1675611895.560477] info     | Root.cpp           | set_verbose_level        | logger setup     
+```
+Now source in bashrc:
+```
+echo "source ~/micro_ros_ws/install/local_setup.sh" >> ~/.bashrc
+source ~/.bashrc
 ```
 
 If you are running this on a companion computer to PX4, you will need to build the package on the companion computer directly. 
@@ -21,29 +128,39 @@ If you are running this on a companion computer to PX4, you will need to build t
 ## Running
 
 ### Software in the Loop
-You will make use of 3 different terminals to run the offboard demo.
+You will make use of 4 different terminals to run the offboard demo.
 
-On the first terminal, run a SITL instance from the PX4 Autopilot firmware.
+On the first terminal,
 ```
+cd ~/micro_ros_ws
+export ROS_DOMAIN_ID=0
+export PYTHONOPTIMIZE=1
+ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888 ROS_DOMAIN_ID=0
+```
+
+On the second terminal,
+```
+cd ~/PX4-Autopilot
+export ROS_DOMAIN_ID=0
+export PYTHONOPTIMIZE=1
 make px4_sitl gazebo
 ```
 
-On the second terminal terminal, run the micro-ros-agent which will perform the mapping between Micro XRCE-DDS and RTPS. So that ROS2 Nodes are able to communicate with the PX4 micrortps_client.
+On the third terminal,
 ```
-micro-ros-agent udp4 --port 8888
-```
-
-In order to run the offboard position control example, open a third terminal and run the the node.
-This runs two ros nodes, which publishes offboard position control setpoints and the visualizer.
-```
+cd ~/px4-offboard
+export ROS_DOMAIN_ID=0
+export PYTHONOPTIMIZE=1
 ros2 launch px4_offboard offboard_position_control.launch.py
-```
-![offboard](https://user-images.githubusercontent.com/5248102/194742116-64b93fcb-ec99-478d-9f4f-f32f7f06e9fd.gif)
 
-In order to just run the visualizer,
 ```
-ros2 launch px4_offboard visualize.launch.py
+On the fourth terminal,
 ```
+./QGroundControl.AppImage
+```
+
+Then insert an aruco marker on the ground in Gazebo and let the iris(drone) take off in QGroundControl. Test the detection and precision landing.
+--------------------------------------------------not revised below-----------------------------------------------------------
 ### Hardware
 
 This section is intended for running the offboard control node on a companion computer, such as a Raspberry Pi or Nvidia Jetson/Xavier. You will either need an SSH connection to run this node, or have a shell script to run the nodes on start up. 
