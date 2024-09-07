@@ -22,8 +22,7 @@ Refer to: https://docs.px4.io/main/en/dev_setup/fast-dds-installation.html
 Check if FastRTPS is installed:
 
 ```bashrc
-dpkg -l | grep fastrt
-​```
+dpkg -l | grep fastrt```
 
 You will see something like:
 
