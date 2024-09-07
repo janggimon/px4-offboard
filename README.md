@@ -75,7 +75,6 @@ cd src
 git clone https://github.com/PX4/px4_ros_com.git
 git clone https://github.com/PX4/px4_msgs.git
 ​```
-
 Move to the px4_ros_com_ws workspace root directory and build them:
 ```
 cd ~/px4_ros_com_ws
@@ -95,6 +94,7 @@ source ~/.bashrc
 ### Installing the micro_ros_agent  (one time setup)
 Building the micro_ros_agent
 Refer to:  Building micro-ROS-Agent (commands below is from Steve Henderson’s guide)
+
 ```
 cd ~
 mkdir ~/micro_ros_ws
