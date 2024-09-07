@@ -117,12 +117,15 @@ class DroneControllerNode(Node):
         trajectory_msg = TrajectorySetpoint()
         trajectory_msg.position = [0.0, 0.0, -0.2]  # 수직 착륙
         trajectory_msg.velocity = [0.0, 0.0, -0.2]
+        self.get_logger().info(f"Publishing TrajectorySetpoint: {trajectory_msg.position}")
         self.trajectory_publisher.publish(trajectory_msg)
 
         # 착륙 중 상태 플래그 설정
         self.landing = True
 
     def cmdloop_callback(self):
+        self.get_logger().info('cmdloop_callback called')
+    
         # Offboard Control Mode 설정
         offboard_mode_msg = OffboardControlMode()
         offboard_mode_msg.timestamp = int(self.get_clock().now().nanoseconds / 1000)
@@ -133,6 +136,13 @@ class DroneControllerNode(Node):
         offboard_mode_msg.body_rate = False
         self.offboard_mode_publisher.publish(offboard_mode_msg)
 
+        # Trajectory Setpoint 송신
+        trajectory_msg = TrajectorySetpoint()
+        trajectory_msg.timestamp = int(self.get_clock().now().nanoseconds / 1000)
+        trajectory_msg.position = [0.0, 0.0, -1.0]  # 예시로 수직 방향으로 내려가도록 설정
+        trajectory_msg.velocity = [0.0, 0.0, 0.0]
+        trajectory_msg.acceleration = [0.0, 0.0, 0.0]
+        self.trajectory_publisher.publish(trajectory_msg)
 
 def main(args=None):
     rclpy.init(args=args)
@@ -158,4 +168,3 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
-
