@@ -17,16 +17,14 @@ FastDDS and FastRTPS should already be installed with Ubuntu 20.04, so start wit
 
 ### Installing Fast-RTPS-Gen
 Refer to: https://docs.px4.io/main/en/dev_setup/fast-dds-installation.html
-⚠️
-Ubuntu 20.04: Fast DDS 2.0.2 (or later) and Fast-RTPS-Gen 1.0.4 (not later!).
-Check if FastRTPS is installed:
+!Ubuntu 20.04: Fast DDS 2.0.2 (or later) and Fast-RTPS-Gen 1.0.4 (not later!).
 
+Check if FastRTPS is installed:
 ```
 dpkg -l | grep fastrt
 ​```
 
 You will see something like:
-
 ```
 ii  ros-foxy-fastrtps                               2.1.2-1focal.20220829.174844               amd64        Implementation of RTPS standard.
 ii  ros-foxy-fastrtps-cmake-module                  1.0.4-1focal.20220829.181444               amd64        Provide CMake module to find eProsima FastRTPS.
@@ -35,6 +33,7 @@ ii  ros-foxy-rmw-fastrtps-shared-cpp                1.3.1-1focal.20221012.221742
 ii  ros-foxy-rosidl-typesupport-fastrtps-c          1.0.4-1focal.20221012.215818               amd64        Generate the C interfaces for eProsima FastRTPS.
 ii  ros-foxy-rosidl-typesupport-fastrtps-cpp        1.0.4-1focal.20221012.215633               amd64        Generate the C++ interfaces for eProsima FastRTPS.
 ```
+
 Then you are all good!
 ​
 Java is required to build and use eProsima's RTPS/DDS from IDL code generation tool - Fast-RTPS-Gen. Java JDK 11 is recommended, and it should have been installed as you installed PX4-Autopilot. (Right now I have JDK 13 and it works fine.)
