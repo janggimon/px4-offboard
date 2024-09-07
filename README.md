@@ -171,6 +171,10 @@ ros2 run rqt_graph rqt_graph
 Then you can see the graph as below:
 ![rosgraph2](https://github.com/user-attachments/assets/64dec5bc-b562-4518-bcec-08634ad7bf97)
 
+## How to modify controller node
+If you want to modify control system,
+#### modify 'class ArucoMarkerDetector(Node)' and 'class DroneControllerNode(Node)' in /home/sunyong/px4-offboard/px4_offboard/offboard_control.py
+
 --------------------------------------------------not revised below-----------------------------------------------------------
 ### Hardware
 
