@@ -145,9 +145,11 @@ Now source in bashrc:
 echo "source ~/micro_ros_ws/install/local_setup.sh" >> ~/.bashrc
 source ~/.bashrc
 ```
-###Add downward camera into iris
+### Add downward camera into iris
 modify ~/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models/iris/iris.sdf
+
 find '<link name='base_link'> ... </link>' and then replace it with code below.
+
 ```python
 <link name='base_link'>
       <pose>0 0 0 0 0 0</pose>
