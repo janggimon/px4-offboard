@@ -164,6 +164,11 @@ On the fourth terminal,
 
 Then insert an aruco marker on the ground in Gazebo and let the iris(drone) take off in QGroundControl. Test the detection and precision landing.
 
+If you want to check the ros graph, run the following command in home directory:
+```
+ros2 run rqt_graph rqt_graph
+```
+
 --------------------------------------------------not revised below-----------------------------------------------------------
 ### Hardware
 
