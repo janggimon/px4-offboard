@@ -148,7 +148,7 @@ source ~/.bashrc
 ### Add downward camera into iris
 modify ~/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models/iris/iris.sdf
 
-find '<link name='base_link'> ... </link>' and then replace it with code below.
+find `<link name='base_link'> ... </link>` and then replace it with code below.
 
 ```python
 <link name='base_link'>
