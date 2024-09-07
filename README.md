@@ -276,8 +276,8 @@ Then you can see the graph as below:
 
 ## How to modify controller node
 If you want to modify control system,
-#### Modify 'class ArucoMarkerDetector(Node)' and 'class DroneControllerNode(Node)'
-#### in ~/px4-offboard/px4_offboard/offboard_control.py
+Modify `class ArucoMarkerDetector(Node)` and `class DroneControllerNode(Node)`
+in `~/px4-offboard/px4_offboard/offboard_control.py`
 
 --------------------------------------------------not revised below-----------------------------------------------------------
 ### Hardware
