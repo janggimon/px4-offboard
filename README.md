@@ -27,7 +27,7 @@ dpkg -l | grep fastrt
 
 You will see something like:
 
-```bash
+```bashrc
 ii  ros-foxy-fastrtps                               2.1.2-1focal.20220829.174844               amd64        Implementation of RTPS standard.
 ii  ros-foxy-fastrtps-cmake-module                  1.0.4-1focal.20220829.181444               amd64        Provide CMake module to find eProsima FastRTPS.
 ii  ros-foxy-rmw-fastrtps-cpp                       1.3.1-1focal.20221012.224708               amd64        Implement the ROS middleware interface using eProsima FastRTPS static code generation in C++.
