@@ -20,10 +20,13 @@ Refer to: https://docs.px4.io/main/en/dev_setup/fast-dds-installation.html
 ⚠️
 Ubuntu 20.04: Fast DDS 2.0.2 (or later) and Fast-RTPS-Gen 1.0.4 (not later!).
 Check if FastRTPS is installed:
+
 ```
 dpkg -l | grep fastrt
 ​```
+
 You will see something like:
+
 ```
 ii  ros-foxy-fastrtps                               2.1.2-1focal.20220829.174844               amd64        Implementation of RTPS standard.
 ii  ros-foxy-fastrtps-cmake-module                  1.0.4-1focal.20220829.181444               amd64        Provide CMake module to find eProsima FastRTPS.
