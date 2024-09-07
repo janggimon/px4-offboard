@@ -145,6 +145,83 @@ Now source in bashrc:
 echo "source ~/micro_ros_ws/install/local_setup.sh" >> ~/.bashrc
 source ~/.bashrc
 ```
+###Add downward camera into iris
+modify ~/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models/iris/iris.sdf
+find '<link name='base_link'> ... </link>' and then replace it with code below.
+```python
+<link name='base_link'>
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>1.5</mass>
+        <inertia>
+          <ixx>0.029125</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.029125</iyy>
+          <iyz>0</iyz>
+          <izz>0.055225</izz>
+        </inertia>
+      </inertial>
+      <collision name='base_link_inertia_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.47 0.47 0.11</size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <min_depth>0.001</min_depth>
+              <max_vel>0</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='base_link_inertia_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://iris/meshes/iris.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/DarkGrey</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <sensor name="downward_camera" type="camera">
+        <pose>0 0 -0.15 0 1.5708 0</pose>
+        <camera>
+          <horizontal_fov>1.047</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>100.0</far>
+          </clip>
+        </camera>
+        <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+          <alwaysOn>true</alwaysOn>
+          <updateRate>30.0</updateRate>
+          <cameraName>drone_camera</cameraName>
+          <topicName>/camera/image_raw</topicName>
+        </plugin>
+      </sensor>
+    </link>
+```
 
 If you are running this on a companion computer to PX4, you will need to build the package on the companion computer directly. 
 
