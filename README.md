@@ -225,6 +225,13 @@ find `<link name='base_link'> ... </link>` and then replace it with code below.
     </link>
 ```
 
+###Add Aruco marker model
+Unzip 'marker1.zip' and move it to '/home/sunyong/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models/'.
+
+Then yon can add aruco marker 'marker1' in Gazebo - insert tab. It's 5X5 marker with white contour.
+![Marker1](https://github.com/user-attachments/assets/f83b0f15-e14a-43a5-8080-dba2adc1be0f)
+
+
 If you are running this on a companion computer to PX4, you will need to build the package on the companion computer directly. 
 
 ## Running
